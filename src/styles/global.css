@@ -80,3 +80,18 @@ html, body {
       0 0 60px #00ffff;
   }
 }
+
+.no-select {
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Standard syntax */
+
+  -webkit-user-drag: none; /* Prevent dragging in WebKit browsers */
+  -khtml-user-drag: none; /* Prevent dragging in Konqueror */
+  -moz-user-user-drag: none; /* Prevent dragging in Firefox */
+  -o-user-drag: none; /* Prevent dragging in Opera */
+  user-drag: none; /* Standard syntax */
+
+  cursor: default; /* Change cursor to default instead of text select */
+}

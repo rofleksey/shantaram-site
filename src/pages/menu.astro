@@ -8,7 +8,10 @@ import MenuFragment from '../components/menu/MenuFragment.vue';
 <Layout>
     <HomeBackgroundAnimation />
     <main>
-        <MenuFragment client:load />
+        <MenuFragment
+          client:only
+          title="Меню"
+          menuId="main" />
     </main>
     <AppFooter />
 </Layout>

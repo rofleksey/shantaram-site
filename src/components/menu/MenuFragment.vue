@@ -1,80 +1,50 @@
 <template>
   <div class="menu-container">
     <div class="menu-content">
-      <h2 class="menu-title">Меню</h2>
+      <h2 class="menu-title no-select">{{ props.title }}</h2>
 
-      <div class="accordions-container">
-        <div
-          v-for="group in productGroups"
-          :key="group.id"
-          class="accordion"
-          :class="{ 'accordion-open': group.open }"
-        >
-          <div class="accordion-header" @click="toggleAccordion(group.id)">
-            <h3 class="group-title">{{ group.title }}</h3>
-            <div class="accordion-icon">
-              <i class="fas" :class="group.open ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
-            </div>
-          </div>
-
-          <transition name="accordion">
-            <div v-if="group.open" class="accordion-content">
-              <div
-                v-for="product in group.products"
-                :key="product.id"
-                class="product-item"
-                :class="{ 'product-unavailable': !product.available }"
-              >
-                <div class="product-info">
-                  <h4 class="product-title">{{ product.title }}</h4>
-                  <p class="product-description">{{ product.description }}</p>
-                  <div class="product-price">{{ product.price }} ₽</div>
-                </div>
-
-                <div v-if="product.available" class="product-controls">
-                  <div class="quantity-controls">
-                    <button
-                      class="quantity-btn"
-                      @click="decrementProduct(product)"
-                      :disabled="!getCartItem(product.id)"
-                    >
-                      <i class="fas fa-minus"></i>
-                    </button>
-                    <span class="quantity-display">
-                      {{ getCartItem(product.id)?.amount || 0 }}
-                    </span>
-                    <button class="quantity-btn" @click="incrementProduct(product)">
-                      <i class="fas fa-plus"></i>
-                    </button>
-                  </div>
-                </div>
-                <div v-else class="unavailable-label">Нет в наличии</div>
-              </div>
-            </div>
-          </transition>
-        </div>
+      <!-- Loading State -->
+      <div v-if="loading" class="loading-container">
+        <div class="spinner"></div>
+        <p class="loading-text">Загружаем меню...</p>
       </div>
 
-      <transition name="cart-slide">
-        <div v-if="cartTotal > 0" class="cart-footer">
-          <div class="cart-total">
-            Итого: {{ cartTotal }} ₽
-          </div>
-          <button class="order-btn" @click="goToOrder">
-            <i class="fas fa-shopping-cart"></i>
-            Оформить заказ
-          </button>
-        </div>
-      </transition>
+      <!-- Error State -->
+      <div v-else-if="error" class="error-container">
+        <div class="error-icon">⚠️</div>
+        <h3 class="error-title">Не удалось загрузить меню</h3>
+        <button @click="fetchMenu" class="retry-button">Еще раз</button>
+      </div>
+
+      <!-- Success State -->
+      <div v-else class="accordions-container">
+        <ProductAccordion
+          v-for="group in productGroups"
+          :key="group.id"
+          :group="group"
+          :open="group.open"
+          @toggle="toggleAccordion(group.id)"
+        />
+      </div>
+
+      <CartFooter v-if="!loading && !error"/>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
-import type {Product, ProductGroup} from "../../api/oapi";
-import type {CartItem} from "../../lib/ui-types.ts";
+import {ref, onMounted} from 'vue'
+import type {Menu, ProductGroup} from "../../api/oapi";
 import {getErrorText, useApiClient} from "../../api/api/api.ts";
+import ProductAccordion from './ProductAccordion.vue'
+import CartFooter from './CartFooter.vue'
+
+const props = defineProps<{
+  title: string
+  menuId: string
+}>()
+
+console.log(props)
 
 interface FrontProductGroup extends ProductGroup {
   open: boolean;
@@ -82,66 +52,39 @@ interface FrontProductGroup extends ProductGroup {
 
 const api = useApiClient()
 const productGroups = ref<FrontProductGroup[]>([])
-const cart = ref<CartItem[]>([])
-
-const cartTotal = computed(() => {
-  return cart.value.reduce((total, item) => {
-    return total + (item.product.price * item.amount)
-  }, 0)
-})
+const loading = ref(true)
+const error = ref<string | null>(null)
 
 const toggleAccordion = (groupId: string) => {
   productGroups.value = productGroups.value.map(group => ({
     ...group,
-    isOpen: group.id === groupId ? !group.open : group.open
+    open: group.id === groupId ? !group.open : group.open
   }))
 }
 
-const getCartItem = (productId: string) => {
-  return cart.value.find(item => item.product.id === productId)
-}
-
-const incrementProduct = (product: Product) => {
-  const existingItem = getCartItem(product.id)
-  if (existingItem) {
-    existingItem.amount++
-  } else {
-    cart.value.push({
-      product,
-      amount: 1
-    })
-  }
-}
-
-const decrementProduct = (product: Product) => {
-  const existingItemIndex = cart.value.findIndex(item => item.product.id === product.id)
-  if (existingItemIndex !== -1) {
-    const item = cart.value[existingItemIndex]
-    if (item.amount > 1) {
-      item.amount--
-    } else {
-      cart.value.splice(existingItemIndex, 1)
-    }
-  }
-}
-
-const goToOrder = () => {
-  window.location.href = '/order'
-}
-
 const fetchMenu = async () => {
+  loading.value = true
+  error.value = null
+
   try {
     const res = await api.api.getMenu()
+    console.log(res.data)
+    const targetMenu = res.data.menus.find((menu: Menu) => menu.id === props.menuId)
 
-    const defaultMenu = res.data.menus.find((menu: any) => menu.id === 'default')
-    if (defaultMenu) {
-      productGroups.value = defaultMenu.groups.map((group: any) => ({
+    if (targetMenu) {
+      const isSingleGroup = targetMenu.groups.length === 1
+      productGroups.value = targetMenu.groups.map((group: ProductGroup) => ({
         ...group,
-        isOpen: false
+        open: isSingleGroup
       }))
+    } else {
+      error.value = 'Menu not found'
     }
   } catch (e) {
     console.error('Error fetching menu:', getErrorText(e))
+    error.value = getErrorText(e) || 'Failed to load menu. Please try again.'
+  } finally {
+    loading.value = false
   }
 }
 
@@ -176,214 +119,81 @@ onMounted(() => {
   gap: 1rem;
 }
 
-.accordion {
-  background: rgba(36, 36, 36, 0.7);
-  border: 1px solid var(--battleship-gray);
-  border-radius: 8px;
-  overflow: hidden;
-  backdrop-filter: blur(5px);
-  transition: all 0.3s ease;
-}
-
-.accordion:hover {
-  border-color: var(--platinum);
-}
-
-.accordion-header {
-  padding: 1.5rem;
+/* Loading Styles */
+.loading-container {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  justify-content: center;
+  padding: 3rem 1rem;
+  gap: 1rem;
 }
 
-.accordion-header:hover {
-  background: rgba(145, 143, 143, 0.1);
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(223, 223, 223, 0.3);
+  border-left: 4px solid var(--almost-white);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
 }
 
-.group-title {
-  font-family: 'Orbitron', monospace;
-  font-size: 1.3rem;
-  font-weight: 600;
+.loading-text {
   color: var(--almost-white);
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  font-size: 1.1rem;
   margin: 0;
 }
 
-.accordion-icon {
-  color: var(--platinum);
-  transition: transform 0.3s ease;
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
-.accordion-open .accordion-icon {
-  transform: rotate(180deg);
-}
-
-.accordion-content {
-  border-top: 1px solid var(--battleship-gray);
-}
-
-.accordion-enter-active,
-.accordion-leave-active {
-  transition: all 0.3s ease;
-  max-height: 1000px;
-}
-
-.accordion-enter-from,
-.accordion-leave-to {
-  max-height: 0;
-  opacity: 0;
-}
-
-.product-item {
-  padding: 1.5rem;
-  border-bottom: 1px solid rgba(145, 143, 143, 0.3);
+/* Error Styles */
+.error-container {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+  text-align: center;
   gap: 1rem;
 }
 
-.product-item:last-child {
-  border-bottom: none;
+.error-icon {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
 }
 
-.product-unavailable {
-  opacity: 0.6;
-}
-
-.product-info {
-  flex: 1;
-}
-
-.product-title {
-  font-size: 1.1rem;
-  font-weight: 600;
+.error-title {
   color: var(--almost-white);
-  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+  margin: 0 0 0.5rem 0;
 }
 
-.product-description {
-  font-size: 0.9rem;
-  color: var(--platinum);
-  margin-bottom: 0.5rem;
+.error-message {
+  color: rgba(223, 223, 223, 0.8);
+  font-size: 1rem;
+  margin: 0 0 1.5rem 0;
+  max-width: 400px;
   line-height: 1.4;
 }
 
-.product-price {
-  font-family: 'Orbitron', monospace;
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--almost-white);
-}
-
-.product-controls {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.quantity-controls {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: rgba(12, 12, 12, 0.8);
-  border: 1px solid var(--battleship-gray);
-  border-radius: 4px;
-  padding: 0.25rem;
-}
-
-.quantity-btn {
-  background: transparent;
+.retry-button {
+  background: var(--almost-white);
+  color: #000;
   border: none;
-  color: var(--platinum);
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border-radius: 2px;
-}
-
-.quantity-btn:hover:not(:disabled) {
-  background: rgba(223, 223, 223, 0.1);
-  color: var(--almost-white);
-}
-
-.quantity-btn:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-
-.quantity-display {
-  color: var(--almost-white);
-  font-weight: 600;
-  min-width: 30px;
-  text-align: center;
-}
-
-.unavailable-label {
-  color: var(--battleship-gray);
-  font-style: italic;
-  font-size: 0.9rem;
-}
-
-.cart-footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(12, 12, 12, 0.95);
-  border-top: 1px solid var(--battleship-gray);
-  padding: 1rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  backdrop-filter: blur(10px);
-}
-
-.cart-total {
-  font-family: 'Orbitron', monospace;
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: var(--almost-white);
-}
-
-.order-btn {
-  background: linear-gradient(45deg, var(--platinum), var(--almost-white));
-  border: none;
-  color: var(--night);
   padding: 0.75rem 1.5rem;
-  font-family: 'Orbitron', monospace;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  border-radius: 4px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
 }
 
-.order-btn:hover {
+.retry-button:hover {
+  background: rgba(223, 223, 223, 0.9);
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(223, 223, 223, 0.3);
-}
-
-.cart-slide-enter-active,
-.cart-slide-leave-active {
-  transition: all 0.3s ease;
-  transform: translateY(0);
-}
-
-.cart-slide-enter-from,
-.cart-slide-leave-to {
-  transform: translateY(100%);
 }
 
 @media (max-width: 768px) {
@@ -395,21 +205,23 @@ onMounted(() => {
     font-size: 2rem;
   }
 
-  .product-item {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
+  .loading-container,
+  .error-container {
+    padding: 2rem 1rem;
   }
 
-  .product-controls {
-    width: 100%;
-    justify-content: flex-end;
+  .spinner {
+    width: 32px;
+    height: 32px;
+    border-width: 3px;
   }
 
-  .cart-footer {
-    flex-direction: column;
-    gap: 1rem;
-    text-align: center;
+  .error-icon {
+    font-size: 2.5rem;
+  }
+
+  .error-title {
+    font-size: 1.3rem;
   }
 }
 </style>

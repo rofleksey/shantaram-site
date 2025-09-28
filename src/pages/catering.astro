@@ -2,13 +2,16 @@
 import Layout from '../layouts/Layout.astro';
 import HomeBackgroundAnimation from '../components/home/HomeBackgroundAnimation.astro';
 import AppFooter from '../components/common/AppFooter.astro';
-import OrderFragment from '../components/order/OrderFragment.vue';
+import MenuFragment from '../components/menu/MenuFragment.vue';
 ---
 
 <Layout>
     <HomeBackgroundAnimation />
     <main>
-        <OrderFragment client:only />
+        <MenuFragment
+          client:only
+          title="Кейтеринг"
+          menuId="catering" />
     </main>
     <AppFooter />
 </Layout>
