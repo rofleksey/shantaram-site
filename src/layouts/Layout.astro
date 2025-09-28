@@ -1,6 +1,7 @@
 ---
 import "../styles/font-awesome.min.css"
 import "../styles/fonts.css"
+import "../styles/global.css"
 // src/layouts/Layout.astro
 ---
 
@@ -17,82 +18,3 @@ import "../styles/fonts.css"
 
 </body>
 </html>
-
-<style is:global>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  :root {
-    --platinum: #DFDFDFff;
-    --night: #0E0E0Eff;
-    --eerie-black: #242424ff;
-    --night-2: #0C0C0Cff;
-    --battleship-gray: #918F8Fff;
-    --almost-white: #F5F5F5;
-  }
-
-  body {
-    font-family: 'Arial', sans-serif;
-    background-color: var(--night);
-    color: var(--platinum);
-    overflow-x: hidden;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
-
-  @keyframes gridMove {
-    0% { transform: perspective(500px) rotateX(60deg) translateY(0) translateZ(0); }
-    100% { transform: perspective(500px) rotateX(60deg) translateY(40px) translateZ(0); }
-  }
-
-  @keyframes float {
-    0%, 100% { transform: translateY(0) scale(1); }
-    50% { transform: translateY(-20px) scale(1.05); }
-  }
-
-  @keyframes scan {
-    0% { top: 0; }
-    100% { top: 100%; }
-  }
-
-  @keyframes glitch {
-    0%, 100% {
-      transform: translate(0);
-      text-shadow:
-        0 0 5px var(--platinum),
-        0 0 10px var(--platinum),
-        0 0 20px rgba(255, 255, 255, 0.5),
-        0 0 40px rgba(255, 215, 0, 0.3);
-    }
-    97% {
-      transform: translate(0);
-      text-shadow:
-        0 0 5px var(--platinum),
-        0 0 10px var(--platinum),
-        0 0 20px rgba(255, 255, 255, 0.5),
-        0 0 40px rgba(255, 215, 0, 0.3);
-    }
-    98% {
-      transform: translate(-2px, 1px);
-      text-shadow:
-        0 0 5px var(--platinum),
-        0 0 10px #ff0080,
-        0 0 20px rgba(255, 255, 255, 0.5),
-        0 0 40px rgba(255, 215, 0, 0.3),
-        0 0 60px #ff0080;
-    }
-    99% {
-      transform: translate(2px, -1px);
-      text-shadow:
-        0 0 5px var(--platinum),
-        0 0 10px #00ffff,
-        0 0 20px rgba(255, 255, 255, 0.5),
-        0 0 40px rgba(255, 215, 0, 0.3),
-        0 0 60px #00ffff;
-    }
-  }
-</style>

@@ -1,0 +1,41 @@
+---
+// src/pages/index.astro
+import Layout from '../layouts/Layout.astro';
+import NavButton from "../components/home/NavButton.astro";
+import EpicTitle from "../components/home/EpicTitle.astro";
+---
+
+<Layout>
+    <div class="container">
+        <video autoplay muted preload="auto" src="/video/cat_404.mp4"></video>
+        <EpicTitle>PAGE NOT FOUND</EpicTitle>
+        <NavButton href="/">go home</NavButton>
+    </div>
+</Layout>
+
+<style>
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+    text-align: center;
+    gap: 2rem;
+    margin: 0 auto;
+  }
+
+  video {
+    width: 100%;
+    max-width: 600px;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      gap: 1.5rem;
+      padding: 0 1rem;
+    }
+  }
+</style>

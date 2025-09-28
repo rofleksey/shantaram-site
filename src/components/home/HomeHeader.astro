@@ -1,14 +1,15 @@
 ---
 // src/components/HomeHeader.astro
-import { Image } from 'astro:assets';
+import {Image} from 'astro:assets';
 import CatImage from "../../assets/shantaram_cat.jpg";
+import EpicTitle from "./EpicTitle.astro";
 ---
 
-<header>
-    <h1 class="logo">SHANTARAM</h1>
+<header class="no-select">
+    <EpicTitle>SHANTARAM</EpicTitle>
 
     <div class="cat-container">
-        <Image src={CatImage} alt="cat logo" />
+        <Image src={CatImage} alt="cat logo"/>
     </div>
 </header>
 
@@ -20,47 +21,39 @@ import CatImage from "../../assets/shantaram_cat.jpg";
     z-index: 10;
   }
 
-  .logo {
-    font-family: 'Orbitron', monospace;
-    font-size: 3.5rem;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 4px;
-    margin-bottom: 1rem;
-    color: var(--almost-white);
-    text-shadow:
-      0 0 5px var(--platinum),
-      0 0 10px var(--platinum),
-      0 0 20px rgba(255, 255, 255, 0.5),
-      0 0 40px rgba(255, 215, 0, 0.3);
-    animation: glitch 5s infinite;
-    position: relative;
-  }
-
   .cat-container {
     width: 90%;
+    max-width: 600px;
     margin: 0 auto 2rem;
-    background: linear-gradient(45deg, var(--eerie-black), var(--night-2));
-    border: 1px solid var(--battleship-gray);
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
   }
 
   .cat-container img {
-      width: 100%;
-      height: 100%;
+    width: 100%;
+    height: auto;
+    display: block;
+    max-width: 600px;
   }
 
-  @media (min-width: 768px) {
-    .logo {
-      font-size: 5rem;
+  @media (max-width: 767px) {
+    .cat-container {
+      width: 95%;
+      margin: 0 auto 1.5rem;
+    }
+
+    .cat-container img {
+      width: 100%;
+      height: auto;
     }
   }
 
   @media (max-width: 480px) {
-    .logo {
-      font-size: 2.5rem;
+    .cat-container {
+      width: 98%;
+      padding: 0.5rem;
     }
   }
 </style>
