@@ -5,6 +5,11 @@
 <section class="map-section">
     <h2 class="map-title">Кадетская линия, 19</h2>
     <div class="map-container">
+        <div class="loading-overlay">
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+        </div>
         <div style="position:relative;overflow:hidden;color-scheme:dark;width:100%;height:100%">
             <a href="https://yandex.com/maps/org/shantaram/138974568668/?utm_medium=mapframe&utm_source=maps" style="color:#eee;font-size:12px;position:absolute;top:0px;">Shantaram</a>
             <a href="https://yandex.com/maps/2/saint-petersburg/category/hookah_lounge/34866769160/?utm_medium=mapframe&utm_source=maps" style="color:#eee;font-size:12px;position:absolute;top:14px;">
@@ -17,36 +22,94 @@
 </section>
 
 <style>
-  .map-section {
-    padding: 2rem 1rem;
-    max-width: 800px;
-    margin: 0 auto;
-    width: 100%;
-  }
-
-  .map-title {
-    font-size: 1.5rem;
-    text-align: center;
-    margin-bottom: 1rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: var(--almost-white);
-  }
-
-  .map-container {
-    width: 100%;
-    height: 300px;
-    background: var(--eerie-black);
-    border: 1px solid var(--battleship-gray);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-  }
-
-  @media (min-width: 768px) {
-    .map-container {
-      height: 400px;
+    .map-section {
+        padding: 2rem 1rem;
+        max-width: 800px;
+        margin: 0 auto;
+        width: 100%;
     }
-  }
+
+    .map-title {
+        font-size: 1.5rem;
+        text-align: center;
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: var(--almost-white);
+    }
+
+    .map-container {
+        width: 100%;
+        height: 300px;
+        background: var(--eerie-black);
+        border: 1px solid var(--battleship-gray);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .loading-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--night);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10;
+        animation: fadeOut 0.3s ease 3s forwards;
+    }
+
+    .progress-bar {
+        width: 80%;
+        height: 4px;
+        background: var(--eerie-black);
+        border: 1px solid var(--battleship-gray);
+        border-radius: 2px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--platinum), var(--almost-white));
+        width: 0%;
+        animation: fillProgress 3s linear forwards;
+        box-shadow: 0 0 10px rgba(223, 223, 223, 0.7);
+    }
+
+    @keyframes fillProgress {
+        0% { width: 0%; }
+        100% { width: 100%; }
+    }
+
+    @keyframes fadeOut {
+        0% { opacity: 1; }
+        100% { opacity: 0; visibility: hidden; }
+    }
+
+    @media (min-width: 768px) {
+        .map-container {
+            height: 400px;
+        }
+    }
 </style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const overlay: any = document.querySelector('.loading-overlay');
+        setTimeout(() => {
+            if (overlay) {
+                overlay.style.opacity = '0';
+                setTimeout(() => {
+                    overlay.remove();
+                }, 300);
+            }
+        }, 3000);
+    });
+</script>

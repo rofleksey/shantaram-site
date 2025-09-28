@@ -1,0 +1,14 @@
+---
+import Layout from '../layouts/Layout.astro';
+import HomeBackgroundAnimation from '../components/home/HomeBackgroundAnimation.astro';
+import AppFooter from '../components/common/AppFooter.astro';
+import MenuFragment from '../components/menu/MenuFragment.vue';
+---
+
+<Layout>
+    <HomeBackgroundAnimation />
+    <main>
+        <MenuFragment client:load />
+    </main>
+    <AppFooter />
+</Layout>

@@ -1,0 +1,16 @@
+---
+import Layout from '../layouts/Layout.astro';
+import HomeBackgroundAnimation from '../components/home/HomeBackgroundAnimation.astro';
+import HomeHeader from '../components/home/HomeHeader.astro';
+import HomeFooter from '../components/home/HomeFooter.astro';
+import OrderFragment from '../components/order/OrderFragment.vue';
+---
+
+<Layout>
+    <HomeBackgroundAnimation />
+    <HomeHeader />
+    <main>
+        <OrderFragment client:load />
+    </main>
+    <HomeFooter />
+</Layout>

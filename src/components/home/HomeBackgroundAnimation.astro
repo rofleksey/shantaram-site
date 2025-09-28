@@ -7,7 +7,6 @@
         <source src="/video/background.mp4" type="video/mp4">
     </video>
     <div class="vaporwave-grid"></div>
-    <div class="scan-line"></div>
 </div>
 
 <style>
@@ -54,34 +53,4 @@
     height: 100%;
     z-index: 1;
   }
-
-  .scan-line {
-    position: absolute;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--almost-white), transparent);
-    opacity: 0.1;
-    animation: scan 8s linear infinite;
-  }
 </style>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const shapes = document.querySelectorAll('.shape');
-
-    shapes.forEach((shape: any) => {
-      const randomX = Math.random() * 80 + 10;
-      const randomY = Math.random() * 80 + 10;
-      shape.style.left = `${randomX}%`;
-      shape.style.top = `${randomY}%`;
-    });
-
-    const scanLine: any = document.querySelector('.scan-line');
-    setInterval(() => {
-      scanLine.style.animation = 'none';
-      setTimeout(() => {
-        scanLine.style.animation = 'scan 8s linear infinite';
-      }, 10);
-    }, 8000);
-  });
-</script>
