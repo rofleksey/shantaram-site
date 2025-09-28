@@ -1,7 +1,7 @@
 <template>
   <div class="order-container">
     <div class="order-content">
-      <h2 class="order-title">Оформление заказа</h2>
+      <SmallHeader title="Оформление заказа"/>
 
       <OrderSummary v-if="!orderSuccess"/>
 
@@ -27,6 +27,7 @@ import OrderSummary from './OrderSummary.vue'
 import OrderForm from './OrderForm.vue'
 import OrderSuccess from './OrderSuccess.vue'
 import {useApiClient} from "../../api/api/api.ts";
+import SmallHeader from "../common/SmallHeader.vue";
 
 interface OrderData {
   name: string
@@ -98,25 +99,9 @@ onMounted(() => {
   min-height: calc(100vh - 200px);
 }
 
-.order-title {
-  font-family: 'Orbitron', monospace;
-  font-size: 2.5rem;
-  font-weight: 700;
-  text-align: center;
-  margin-bottom: 2rem;
-  color: var(--almost-white);
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  text-shadow: 0 0 10px rgba(223, 223, 223, 0.5);
-}
-
 @media (max-width: 768px) {
   .order-container {
     padding: 1rem 0.5rem;
-  }
-
-  .order-title {
-    font-size: 2rem;
   }
 }
 </style>

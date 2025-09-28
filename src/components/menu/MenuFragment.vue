@@ -1,7 +1,7 @@
 <template>
   <div class="menu-container">
     <div class="menu-content">
-      <h2 class="menu-title no-select">{{ props.title }}</h2>
+      <SmallHeader :title="props.title" />
 
       <div v-if="loading" class="loading-container">
         <div class="spinner"></div>
@@ -35,6 +35,7 @@ import type {Menu, ProductGroup} from "../../api/oapi";
 import {getErrorText, useApiClient} from "../../api/api/api.ts";
 import ProductAccordion from './ProductAccordion.vue'
 import CartFooter from './CartFooter.vue'
+import SmallHeader from '../common/SmallHeader.vue'
 
 const props = defineProps<{
   title: string
@@ -96,18 +97,6 @@ onMounted(() => {
   max-width: 800px;
   margin: 0 auto;
   width: 100%;
-}
-
-.menu-title {
-  font-family: 'Orbitron', monospace;
-  font-size: 2.5rem;
-  font-weight: 700;
-  text-align: center;
-  margin-bottom: 2rem;
-  color: var(--almost-white);
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  text-shadow: 0 0 10px rgba(223, 223, 223, 0.5);
 }
 
 .accordions-container {
@@ -194,10 +183,6 @@ onMounted(() => {
 @media (max-width: 768px) {
   .menu-container {
     padding: 1rem 0.5rem;
-  }
-
-  .menu-title {
-    font-size: 2rem;
   }
 
   .loading-container,

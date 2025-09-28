@@ -28,7 +28,7 @@ const STRUCTURED_DATA = {
   "@type": "FoodEstablishment",
   "name": SITE_NAME,
   "description": "Премиальная кальянная с лучшими кальянами и атмосферой для отдыха в Санкт-Петербурге",
-  "url": "https://shantaram.ru/",
+  "url": "https://shantaram-spb.ru/",
   "address": {
     "@type": "PostalAddress",
     "addressCountry": "Россия",
@@ -74,8 +74,8 @@ const STRUCTURED_DATA = {
 
   <meta name="geo.region" content="RU-SPE" />
   <meta name="geo.placename" content="Санкт-Петербург" />
-  <meta name="geo.position" content="59.941389;30.266667" />
-  <meta name="ICBM" content="59.941389, 30.266667" />
+  <meta name="geo.position" content="59.944702, 30.287365" />
+  <meta name="ICBM" content="59.944702, 30.287365" />
 
   <meta property="og:type" content="website"/>
   <meta property="og:site_name" content={SITE_NAME}/>
@@ -95,9 +95,7 @@ const STRUCTURED_DATA = {
   <meta name="rating" content="general"/>
   <meta name="distribution" content="global"/>
 
-  <script type="application/ld+json">
-    {JSON.stringify(STRUCTURED_DATA)}
-  </script>
+  <script type="application/ld+json" set:html={JSON.stringify(STRUCTURED_DATA)}></script>
 </head>
 <body>
 

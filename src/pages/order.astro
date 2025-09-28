@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HomeBackgroundAnimation from '../components/home/HomeBackgroundAnimation.astro';
-import AppFooter from '../components/common/AppFooter.astro';
 import OrderFragment from '../components/order/OrderFragment.vue';
 ---
 
@@ -10,5 +9,4 @@ import OrderFragment from '../components/order/OrderFragment.vue';
     <main>
         <OrderFragment client:only />
     </main>
-    <AppFooter />
 </BaseLayout>
