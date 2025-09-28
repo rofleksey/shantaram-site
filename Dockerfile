@@ -1,17 +1,15 @@
-# Build
-FROM node:22-alpine as build
-WORKDIR /opt
-COPY --link package.json package-lock.json .
+# Build stage
+FROM node:22-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
 RUN npm ci
-COPY --link . .
-RUN npm run build && npm prune
+COPY . .
+RUN npm run build
 
-# Run
+# Production stage
 FROM node:22-alpine
-ENV NODE_ENV=production
-ENV PORT=8080
-ENV HOST=0.0.0.0
-WORKDIR /opt
-RUN apk update && apk add --no-cache curl ca-certificates
-COPY --from=build /opt/dist /opt/dist
-CMD [ "node", "./dist/server/entry.mjs" ]
+RUN npm install -g serve
+WORKDIR /app
+COPY --from=builder /app/dist ./dist
+EXPOSE 8080
+CMD ["serve", "-s", "dist", "-l", "8080"]
