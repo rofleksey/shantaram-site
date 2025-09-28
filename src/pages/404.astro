@@ -1,17 +1,17 @@
 ---
 // src/pages/index.astro
-import Layout from '../layouts/Layout.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
 import NavButton from "../components/common/NavButton.astro";
 import EpicTitle from "../components/common/EpicTitle.astro";
 ---
 
-<Layout>
+<BaseLayout title="SHANTARAM - 404">
     <div class="container">
         <EpicTitle>PAGE NOT FOUND</EpicTitle>
         <video autoplay muted preload="auto" src="/video/cat_404.mp4"></video>
         <NavButton href="/">go home</NavButton>
     </div>
-</Layout>
+</BaseLayout>
 
 <style>
   .container {

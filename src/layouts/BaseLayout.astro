@@ -1,0 +1,107 @@
+---
+// src/layouts/BaseLayout.astro
+import "../styles/font-awesome.min.css"
+import "../styles/fonts.css"
+import "../styles/global.css"
+
+export interface Props {
+  title: string;
+  description?: string;
+  keywords?: string;
+  canonicalUrl?: string;
+}
+
+const {
+  title,
+  description = "Кальянная Shantaram в Санкт-Петербурге – уютный лаунж с кейтерингом, профессиональными кальянщиками и кальянами на выезд.",
+  keywords = "кальянная, SHANTARAM, отдых, релакс, кальяны, кейтеринг",
+  canonicalUrl
+} = Astro.props;
+
+const SITE_NAME = "SHANTARAM - Кальянная";
+const AUTHOR = "SHANTARAM";
+const LANGUAGE = "ru";
+const THEME_COLOR = "#000000";
+
+const STRUCTURED_DATA = {
+  "@context": "https://schema.org",
+  "@type": "FoodEstablishment",
+  "name": SITE_NAME,
+  "description": "Премиальная кальянная с лучшими кальянами и атмосферой для отдыха в Санкт-Петербурге",
+  "url": "https://shantaram.ru/",
+  "address": {
+    "@type": "PostalAddress",
+    "addressCountry": "Россия",
+    "addressLocality": "Санкт-Петербург",
+    "streetAddress": "Кадетская линия, 19",
+    "postalCode": "199004"
+  },
+  "openingHours": "Mo-Su 14:00-02:00",
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday"
+    ],
+    "opens": "14:00",
+    "closes": "02:00",
+    "timeZone": "Europe/Moscow"
+  },
+  "priceRange": "$$",
+  "areaServed": "Санкт-Петербург",
+  "servesCuisine": "Кальянная"
+};
+---
+
+<!DOCTYPE html>
+<html lang={LANGUAGE}>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>{title}</title>
+  <meta name="title" content={title}/>
+  <meta name="description" content={description}/>
+  <meta name="keywords" content={keywords}/>
+  <meta name="author" content={AUTHOR}/>
+  <meta name="robots" content="index, follow"/>
+  <meta name="theme-color" content={THEME_COLOR}/>
+
+  <meta name="geo.region" content="RU-SPE" />
+  <meta name="geo.placename" content="Санкт-Петербург" />
+  <meta name="geo.position" content="59.941389;30.266667" />
+  <meta name="ICBM" content="59.941389, 30.266667" />
+
+  <meta property="og:type" content="website"/>
+  <meta property="og:site_name" content={SITE_NAME}/>
+  <meta property="og:title" content={title}/>
+  <meta property="og:description" content={description}/>
+  <meta property="og:locale" content={LANGUAGE}/>
+
+  <meta property="twitter:card" content="summary"/>
+  <meta property="twitter:title" content={title}/>
+  <meta property="twitter:description" content={description}/>
+
+{canonicalUrl &&
+        <link rel="canonical" href={canonicalUrl}/>}
+
+  <meta name="language" content={LANGUAGE}/>
+  <meta name="revisit-after" content="7 days"/>
+  <meta name="rating" content="general"/>
+  <meta name="distribution" content="global"/>
+
+  <script type="application/ld+json">
+    {JSON.stringify(STRUCTURED_DATA)}
+  </script>
+</head>
+<body>
+
+<slot/>
+
+</body>
+</html>

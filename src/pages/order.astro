@@ -1,14 +1,14 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
 import HomeBackgroundAnimation from '../components/home/HomeBackgroundAnimation.astro';
 import AppFooter from '../components/common/AppFooter.astro';
 import OrderFragment from '../components/order/OrderFragment.vue';
 ---
 
-<Layout>
+<BaseLayout title="SHANTARAM - Заказ">
     <HomeBackgroundAnimation />
     <main>
         <OrderFragment client:only />
     </main>
     <AppFooter />
-</Layout>
+</BaseLayout>

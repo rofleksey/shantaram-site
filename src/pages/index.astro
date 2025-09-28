@@ -1,6 +1,6 @@
 ---
 // src/pages/index.astro
-import Layout from '../layouts/Layout.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
 import HomeBackgroundAnimation from '../components/home/HomeBackgroundAnimation.astro';
 import HomeHeader from '../components/home/HomeHeader.astro';
 import HomeNavigation from '../components/home/HomeNavigation.astro';
@@ -8,7 +8,7 @@ import HomeMapSection from '../components/home/HomeMapSection.astro';
 import AppFooter from '../components/common/AppFooter.astro';
 ---
 
-<Layout>
+<BaseLayout title="SHANTARAM - Главная">
     <HomeBackgroundAnimation />
     <HomeHeader />
     <main>
@@ -16,4 +16,4 @@ import AppFooter from '../components/common/AppFooter.astro';
         <HomeMapSection />
     </main>
     <AppFooter />
-</Layout>
+</BaseLayout>

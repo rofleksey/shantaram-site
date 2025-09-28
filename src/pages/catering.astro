@@ -1,11 +1,11 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
 import HomeBackgroundAnimation from '../components/home/HomeBackgroundAnimation.astro';
 import AppFooter from '../components/common/AppFooter.astro';
 import MenuFragment from '../components/menu/MenuFragment.vue';
 ---
 
-<Layout>
+<BaseLayout title="SHANTARAM - Кейтеринг">
     <HomeBackgroundAnimation />
     <main>
         <MenuFragment
@@ -14,4 +14,4 @@ import MenuFragment from '../components/menu/MenuFragment.vue';
           menuId="catering" />
     </main>
     <AppFooter />
-</Layout>
+</BaseLayout>

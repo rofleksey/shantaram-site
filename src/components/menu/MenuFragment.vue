@@ -3,20 +3,17 @@
     <div class="menu-content">
       <h2 class="menu-title no-select">{{ props.title }}</h2>
 
-      <!-- Loading State -->
       <div v-if="loading" class="loading-container">
         <div class="spinner"></div>
         <p class="loading-text">Загружаем меню...</p>
       </div>
 
-      <!-- Error State -->
       <div v-else-if="error" class="error-container">
         <div class="error-icon">⚠️</div>
         <h3 class="error-title">Не удалось загрузить меню</h3>
         <button @click="fetchMenu" class="retry-button">Еще раз</button>
       </div>
 
-      <!-- Success State -->
       <div v-else class="accordions-container">
         <ProductAccordion
           v-for="group in productGroups"
@@ -119,7 +116,6 @@ onMounted(() => {
   gap: 1rem;
 }
 
-/* Loading Styles */
 .loading-container {
   display: flex;
   flex-direction: column;
@@ -149,7 +145,6 @@ onMounted(() => {
   100% { transform: rotate(360deg); }
 }
 
-/* Error Styles */
 .error-container {
   display: flex;
   flex-direction: column;
