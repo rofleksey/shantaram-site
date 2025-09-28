@@ -70,10 +70,9 @@ const fetchMenu = async () => {
     const targetMenu = res.data.menus.find((menu: Menu) => menu.id === props.menuId)
 
     if (targetMenu) {
-      const isSingleGroup = targetMenu.groups.length === 1
-      productGroups.value = targetMenu.groups.map((group: ProductGroup) => ({
+      productGroups.value = targetMenu.groups.map((group: ProductGroup, index: number) => ({
         ...group,
-        open: isSingleGroup
+        open: index === 0
       }))
     } else {
       error.value = 'Menu not found'
