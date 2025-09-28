@@ -1,0 +1,66 @@
+---
+// src/components/HomeHeader.astro
+import { Image } from 'astro:assets';
+import CatImage from "../../assets/shantaram_cat.jpg";
+---
+
+<header>
+    <h1 class="logo">SHANTARAM</h1>
+
+    <div class="cat-container">
+        <Image src={CatImage} alt="cat logo" />
+    </div>
+</header>
+
+<style>
+  header {
+    text-align: center;
+    padding: 2rem 1rem 1rem;
+    position: relative;
+    z-index: 10;
+  }
+
+  .logo {
+    font-family: 'Orbitron', monospace;
+    font-size: 3.5rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    margin-bottom: 1rem;
+    color: var(--almost-white);
+    text-shadow:
+      0 0 5px var(--platinum),
+      0 0 10px var(--platinum),
+      0 0 20px rgba(255, 255, 255, 0.5),
+      0 0 40px rgba(255, 215, 0, 0.3);
+    animation: glitch 5s infinite;
+    position: relative;
+  }
+
+  .cat-container {
+    width: 90%;
+    margin: 0 auto 2rem;
+    background: linear-gradient(45deg, var(--eerie-black), var(--night-2));
+    border: 1px solid var(--battleship-gray);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cat-container img {
+      width: 100%;
+      height: 100%;
+  }
+
+  @media (min-width: 768px) {
+    .logo {
+      font-size: 5rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .logo {
+      font-size: 2.5rem;
+    }
+  }
+</style>

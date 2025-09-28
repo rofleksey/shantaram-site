@@ -6,9 +6,13 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "gen": "openapi-generator-cli generate -g typescript-axios -i openapi.yaml -o src/api/oapi --additional-properties=withInterfaces=true,useSingleRequestParameter=true"
   },
   "dependencies": {
-    "astro": "^5.14.1"
+    "@astrojs/vue": "^5.1.1",
+    "astro": "^5.14.1",
+    "astro-icon": "^1.1.5",
+    "vue": "^3.5.22"
   }
 }
