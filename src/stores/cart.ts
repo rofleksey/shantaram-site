@@ -69,6 +69,7 @@ export const useCartStore = defineStore('cart', () => {
   function clearCart() {
     items.value = []
     localStorage.removeItem(STORAGE_KEY)
+    saveToStorage()
   }
 
   function serialize(): SerializedCart {
