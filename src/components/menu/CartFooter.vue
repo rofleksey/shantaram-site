@@ -4,10 +4,15 @@
       <div class="cart-total">
         Итого: {{ cartTotal }} ₽
       </div>
-      <button class="order-btn" @click="goToOrder">
-        <i class="fas fa-shopping-cart"></i>
-        Оформить заказ
-      </button>
+      <div class="order-buttons">
+        <button class="order-btn" @click="cartStore.clearCart">
+          <i class="fas fa-remove"></i>
+        </button>
+        <button class="order-btn" @click="goToOrder">
+          <i class="fas fa-shopping-cart"></i>
+          Оформить
+        </button>
+      </div>
     </div>
   </transition>
 </template>
@@ -39,6 +44,13 @@ const goToOrder = () => {
   backdrop-filter: blur(10px);
 }
 
+.order-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
 .cart-total {
   font-family: 'Orbitron', monospace;
   font-size: 1.3rem;
@@ -50,7 +62,10 @@ const goToOrder = () => {
   background: linear-gradient(45deg, var(--platinum), var(--almost-white));
   border: none;
   color: var(--night);
-  padding: 0.75rem 1.5rem;
+}
+
+button {
+  padding: 0.75rem 1rem;
   font-family: 'Orbitron', monospace;
   font-weight: 700;
   text-transform: uppercase;
@@ -63,7 +78,7 @@ const goToOrder = () => {
   gap: 0.5rem;
 }
 
-.order-btn:hover {
+button:hover {
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(223, 223, 223, 0.3);
 }

@@ -42,7 +42,7 @@
       </button>
       <button type="submit" class="submit-btn" :disabled="isSubmitting">
         <i class="fas fa-paper-plane"></i>
-        {{ isSubmitting ? 'Отправка...' : 'Оформить заказ' }}
+        {{ isSubmitting ? 'Отправка...' : 'Оформить' }}
       </button>
     </div>
   </form>
