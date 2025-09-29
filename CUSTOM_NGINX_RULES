@@ -1,0 +1,8 @@
+location ~* \.html$
+add_header Cache-Control "no-cache, no-store, must-revalidate";
+add_header Pragma "no-cache";
+add_header Expires "0";
+
+location ~* \.(jpg|jpeg|png|gif|ico|webp|svg|woff|woff2|ttf|eot|mp4|webm)$
+add_header Cache-Control "public, immutable, max-age=31536000";
+expires 1y;
