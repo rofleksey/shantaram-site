@@ -3,6 +3,7 @@ declare global {
     __backgroundVideoState: {
       shouldPlay: boolean;
     };
+    ym: (counterId: number, method: string, ...args: any[]) => void;
   }
 }
 

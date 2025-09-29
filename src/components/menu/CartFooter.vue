@@ -25,6 +25,12 @@ const cartStore = useCartStore()
 const { total: cartTotal } = storeToRefs(cartStore)
 
 const goToOrder = () => {
+  if (typeof window !== 'undefined' && window.ym) {
+    window.ym(104322771, 'reachGoal', 'cart_to_order', {
+      order_price: cartTotal.value,
+      currency: 'RUB'
+    });
+  }
   window.location.href = '/order'
 }
 </script>

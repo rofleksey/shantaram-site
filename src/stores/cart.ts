@@ -43,6 +43,15 @@ export const useCartStore = defineStore('cart', () => {
         amount: 1
       })
     }
+
+    if (typeof window !== 'undefined' && window.ym) {
+      window.ym(104322771, 'reachGoal', 'product_added', {
+        product_id: product.id,
+        product_name: product.title,
+        product_price: product.price
+      });
+    }
+
     saveToStorage()
   }
 

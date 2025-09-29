@@ -66,7 +66,6 @@ const fetchMenu = async () => {
 
   try {
     const res = await api.api.getMenu()
-    console.log(res.data)
     const targetMenu = res.data.menus.find((menu: Menu) => menu.id === props.menuId)
 
     if (targetMenu) {
@@ -74,6 +73,11 @@ const fetchMenu = async () => {
         ...group,
         open: index === 0
       }))
+
+      if (typeof window !== 'undefined' && window.ym) {
+        window.ym(104322771, 'hit');
+        window.ym(104322771, 'notBounce');
+      }
     } else {
       error.value = 'Menu not found'
     }

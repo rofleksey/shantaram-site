@@ -37,6 +37,7 @@ interface OrderData {
 const api = useApiClient()
 const cartStore = useCartStore()
 const cartItems = computed(() => cartStore.items)
+const cartTotal = computed(() => cartStore.total)
 const isEmpty = computed(() => cartItems.value.length === 0)
 
 const isSubmitting = ref(false)
@@ -71,6 +72,13 @@ const handleOrderSubmit = async (orderData: OrderData) => {
         }))
       }
     })
+
+    if (typeof window !== 'undefined' && window.ym) {
+      window.ym(104322771, 'reachGoal', 'order_success', {
+        order_price: cartTotal.value,
+        currency: 'RUB'
+      });
+    }
 
     orderSuccess.value = true
   } catch (error) {
