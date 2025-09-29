@@ -31,7 +31,6 @@ import SmallHeader from "../common/SmallHeader.vue";
 
 interface OrderData {
   name: string
-  phone: string
   comment: string
 }
 
@@ -65,7 +64,6 @@ const handleOrderSubmit = async (orderData: OrderData) => {
       newOrderRequest: {
         id: crypto.randomUUID(),
         name: orderData.name,
-        phone: orderData.phone,
         comment: orderData.comment,
         items: cartItems.value.map(item => ({
           id: item.product.id,

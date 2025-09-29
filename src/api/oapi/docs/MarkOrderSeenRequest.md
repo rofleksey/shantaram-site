@@ -1,4 +1,4 @@
-# NewOrderRequest
+# MarkOrderSeenRequest
 
 
 ## Properties
@@ -6,20 +6,14 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **string** |  | [default to undefined]
-**name** | **string** |  | [default to undefined]
-**comment** | **string** |  | [optional] [default to undefined]
-**items** | [**Array&lt;NewOrderItem&gt;**](NewOrderItem.md) |  | [default to undefined]
 
 ## Example
 
 ```typescript
-import { NewOrderRequest } from './api';
+import { MarkOrderSeenRequest } from './api';
 
-const instance: NewOrderRequest = {
+const instance: MarkOrderSeenRequest = {
     id,
-    name,
-    comment,
-    items,
 };
 ```
 

@@ -12,6 +12,7 @@ docs/EditProductRequest.md
 docs/General.md
 docs/LoginRequest.md
 docs/LoginResponse.md
+docs/MarkOrderSeenRequest.md
 docs/Menu.md
 docs/MenuResponse.md
 docs/NewOrderItem.md

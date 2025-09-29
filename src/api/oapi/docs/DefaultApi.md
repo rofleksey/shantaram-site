@@ -17,6 +17,7 @@ All URIs are relative to */v1*
 |[**getOrders**](#getorders) | **GET** /orders | Get paginated orders|
 |[**healthCheck**](#healthcheck) | **GET** /healthz | Health check|
 |[**login**](#login) | **POST** /login | Login|
+|[**markOrderSeen**](#markorderseen) | **POST** /order/seen | Mark order as seen|
 |[**setMenuOrdering**](#setmenuordering) | **POST** /menu/ordering | Set menu ordering|
 |[**setOrderStatus**](#setorderstatus) | **POST** /order/setStatus | Set order status|
 |[**setProductGroupOrdering**](#setproductgroupordering) | **POST** /menu/productGroup/ordering | Set product group ordering|
@@ -713,6 +714,60 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 |**200** | Success |  -  |
+|**400** | Bad Request |  -  |
+|**401** | Unauthorized |  -  |
+|**500** | Internal Server Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **markOrderSeen**
+> markOrderSeen(markOrderSeenRequest)
+
+
+### Example
+
+```typescript
+import {
+    DefaultApi,
+    Configuration,
+    MarkOrderSeenRequest
+} from './api';
+
+const configuration = new Configuration();
+const apiInstance = new DefaultApi(configuration);
+
+let markOrderSeenRequest: MarkOrderSeenRequest; //
+
+const { status, data } = await apiInstance.markOrderSeen(
+    markOrderSeenRequest
+);
+```
+
+### Parameters
+
+|Name | Type | Description  | Notes|
+|------------- | ------------- | ------------- | -------------|
+| **markOrderSeenRequest** | **MarkOrderSeenRequest**|  | |
+
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+|**200** | Order status updated successfully |  -  |
 |**400** | Bad Request |  -  |
 |**401** | Unauthorized |  -  |
 |**500** | Internal Server Error |  -  |

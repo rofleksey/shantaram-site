@@ -11,7 +11,6 @@ Name | Type | Description | Notes
 **created** | **string** |  | [default to undefined]
 **status** | [**OrderStatus**](OrderStatus.md) |  | [default to undefined]
 **clientName** | **string** |  | [default to undefined]
-**clientPhone** | **string** |  | [default to undefined]
 **clientComment** | **string** |  | [optional] [default to undefined]
 **seen** | **boolean** |  | [default to undefined]
 **items** | [**Array&lt;OrderItem&gt;**](OrderItem.md) |  | [default to undefined]
@@ -28,7 +27,6 @@ const instance: Order = {
     created,
     status,
     clientName,
-    clientPhone,
     clientComment,
     seen,
     items,

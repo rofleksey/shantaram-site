@@ -6,6 +6,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **string** |  | [default to undefined]
+**index** | **number** |  | [default to undefined]
 **title** | **string** |  | [default to undefined]
 **description** | **string** |  | [default to undefined]
 **price** | **number** |  | [default to undefined]
@@ -20,6 +21,7 @@ import { Product } from './api';
 
 const instance: Product = {
     id,
+    index,
     title,
     description,
     price,

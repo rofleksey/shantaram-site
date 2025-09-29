@@ -13,18 +13,6 @@
     </div>
 
     <div class="form-group">
-      <label for="phone" class="form-label">Телефон *</label>
-      <input
-        id="phone"
-        v-model="orderData.phone"
-        type="tel"
-        class="form-input"
-        required
-        placeholder="+7 (XXX) XXX-XX-XX"
-      >
-    </div>
-
-    <div class="form-group">
       <label for="comment" class="form-label">Комментарий к заказу</label>
       <textarea
         id="comment"
@@ -40,9 +28,9 @@
         <i class="fas fa-arrow-left"></i>
         Назад
       </button>
-      <button type="submit" class="submit-btn" :disabled="isSubmitting">
+      <button type="submit" class="submit-btn" :disabled="props.isSubmitting">
         <i class="fas fa-paper-plane"></i>
-        {{ isSubmitting ? 'Отправка...' : 'Оформить' }}
+        {{ props.isSubmitting ? 'Отправка...' : 'Оформить' }}
       </button>
     </div>
   </form>
@@ -53,7 +41,6 @@ import { ref } from 'vue'
 
 interface OrderData {
   name: string
-  phone: string
   comment: string
 }
 
@@ -74,12 +61,11 @@ const emit = defineEmits<Emits>()
 
 const orderData = ref<OrderData>({
   name: '',
-  phone: '',
   comment: ''
 })
 
 const submitOrder = () => {
-  if (!orderData.value.name || !orderData.value.phone) {
+  if (!orderData.value.name) {
     alert('Пожалуйста, заполните обязательные поля')
     return
   }

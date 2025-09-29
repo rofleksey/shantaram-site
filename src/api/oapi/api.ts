@@ -195,6 +195,19 @@ export interface LoginResponse {
 /**
  * 
  * @export
+ * @interface MarkOrderSeenRequest
+ */
+export interface MarkOrderSeenRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof MarkOrderSeenRequest
+     */
+    'id': string;
+}
+/**
+ * 
+ * @export
  * @interface Menu
  */
 export interface Menu {
@@ -272,12 +285,6 @@ export interface NewOrderRequest {
      * @type {string}
      * @memberof NewOrderRequest
      */
-    'phone': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof NewOrderRequest
-     */
     'comment'?: string;
     /**
      * 
@@ -328,12 +335,6 @@ export interface Order {
      * @memberof Order
      */
     'clientName': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Order
-     */
-    'clientPhone': string;
     /**
      * 
      * @type {string}
@@ -432,6 +433,12 @@ export interface Product {
      * @memberof Product
      */
     'id': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof Product
+     */
+    'index': number;
     /**
      * 
      * @type {string}
@@ -1092,6 +1099,42 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
+         * @summary Mark order as seen
+         * @param {MarkOrderSeenRequest} markOrderSeenRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        markOrderSeen: async (markOrderSeenRequest: MarkOrderSeenRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'markOrderSeenRequest' is not null or undefined
+            assertParamExists('markOrderSeen', 'markOrderSeenRequest', markOrderSeenRequest)
+            const localVarPath = `/order/seen`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(markOrderSeenRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Set menu ordering
          * @param {SetMenuOrderingRequest} setMenuOrderingRequest 
          * @param {*} [options] Override http request option.
@@ -1380,6 +1423,19 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Mark order as seen
+         * @param {MarkOrderSeenRequest} markOrderSeenRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async markOrderSeen(markOrderSeenRequest: MarkOrderSeenRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.markOrderSeen(markOrderSeenRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.markOrderSeen']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @summary Set menu ordering
          * @param {SetMenuOrderingRequest} setMenuOrderingRequest 
          * @param {*} [options] Override http request option.
@@ -1557,6 +1613,16 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
+         * @summary Mark order as seen
+         * @param {DefaultApiMarkOrderSeenRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        markOrderSeen(requestParameters: DefaultApiMarkOrderSeenRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.markOrderSeen(requestParameters.markOrderSeenRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Set menu ordering
          * @param {DefaultApiSetMenuOrderingRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
@@ -1721,6 +1787,16 @@ export interface DefaultApiInterface {
      * @memberof DefaultApiInterface
      */
     login(requestParameters: DefaultApiLoginRequest, options?: RawAxiosRequestConfig): AxiosPromise<LoginResponse>;
+
+    /**
+     * 
+     * @summary Mark order as seen
+     * @param {DefaultApiMarkOrderSeenRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApiInterface
+     */
+    markOrderSeen(requestParameters: DefaultApiMarkOrderSeenRequest, options?: RawAxiosRequestConfig): AxiosPromise<void>;
 
     /**
      * 
@@ -1930,6 +2006,20 @@ export interface DefaultApiLoginRequest {
 }
 
 /**
+ * Request parameters for markOrderSeen operation in DefaultApi.
+ * @export
+ * @interface DefaultApiMarkOrderSeenRequest
+ */
+export interface DefaultApiMarkOrderSeenRequest {
+    /**
+     * 
+     * @type {MarkOrderSeenRequest}
+     * @memberof DefaultApiMarkOrderSeen
+     */
+    readonly markOrderSeenRequest: MarkOrderSeenRequest
+}
+
+/**
  * Request parameters for setMenuOrdering operation in DefaultApi.
  * @export
  * @interface DefaultApiSetMenuOrderingRequest
@@ -2130,6 +2220,18 @@ export class DefaultApi extends BaseAPI implements DefaultApiInterface {
      */
     public login(requestParameters: DefaultApiLoginRequest, options?: RawAxiosRequestConfig) {
         return DefaultApiFp(this.configuration).login(requestParameters.loginRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Mark order as seen
+     * @param {DefaultApiMarkOrderSeenRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public markOrderSeen(requestParameters: DefaultApiMarkOrderSeenRequest, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).markOrderSeen(requestParameters.markOrderSeenRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
