@@ -87,7 +87,6 @@ const decrementProduct = () => {
 }
 
 .product-price {
-  font-family: 'Orbitron', monospace;
   font-size: 1.2rem;
   font-weight: 700;
   color: var(--almost-white);

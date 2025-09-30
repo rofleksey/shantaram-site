@@ -22,32 +22,31 @@ import EpicTitle from "../common/EpicTitle.astro";
 <style>
   header {
     text-align: center;
-    padding: 2rem 1rem 1rem;
+    //padding: 2rem 1rem 1rem;
     position: relative;
     z-index: 10;
   }
 
   .cat-container {
     width: 90%;
-    max-width: 600px;
-    margin: 0 auto 2rem;
+    max-width: 500px;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    margin: 0 auto;
   }
 
   .cat-container img {
     width: 100%;
     height: auto;
     display: block;
-    max-width: 600px;
+    max-width: 400px;
   }
 
   @media (max-width: 767px) {
     .cat-container {
       width: 95%;
-      margin: 0 auto 1.5rem;
     }
 
     .cat-container img {
@@ -59,7 +58,6 @@ import EpicTitle from "../common/EpicTitle.astro";
   @media (max-width: 480px) {
     .cat-container {
       width: 98%;
-      padding: 0.5rem;
     }
   }
 </style>

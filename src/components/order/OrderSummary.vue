@@ -89,13 +89,11 @@ const { items: cartItems, total: cartTotal } = storeToRefs(cartStore)
 }
 
 .item-total {
-  font-family: 'Orbitron', monospace;
   font-weight: 700;
   color: var(--almost-white);
 }
 
 .order-total {
-  font-family: 'Orbitron', monospace;
   font-size: 1.3rem;
   font-weight: 700;
   color: var(--almost-white);

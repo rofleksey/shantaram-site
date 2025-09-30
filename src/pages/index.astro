@@ -5,15 +5,15 @@ import HomeBackgroundAnimation from '../components/home/HomeBackgroundAnimation.
 import HomeHeader from '../components/home/HomeHeader.astro';
 import HomeNavigation from '../components/home/HomeNavigation.astro';
 import HomeMapSection from '../components/home/HomeMapSection.astro';
-import AppFooter from '../components/common/AppFooter.astro';
+import SocialLinks from '../components/common/SocialLinks.astro';
 ---
 
 <BaseLayout title="SHANTARAM - Главная">
     <HomeBackgroundAnimation />
     <HomeHeader />
+    <SocialLinks />
     <main>
         <HomeNavigation />
         <HomeMapSection />
     </main>
-    <AppFooter />
 </BaseLayout>

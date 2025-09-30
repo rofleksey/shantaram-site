@@ -58,7 +58,6 @@ const goToOrder = () => {
 }
 
 .cart-total {
-  font-family: 'Orbitron', monospace;
   font-size: 1.3rem;
   font-weight: 700;
   color: var(--almost-white);
