@@ -10,9 +10,9 @@
     <transition name="accordion">
       <div v-if="open" class="accordion-content">
         <ProductItem
-          v-for="product in group.products"
-          :key="product.id"
-          :product="product"
+            v-for="product in group.products"
+            :key="product.id"
+            :product="product"
         />
       </div>
     </transition>
@@ -37,9 +37,6 @@ defineEmits<{
 <style scoped>
 .accordion {
   background: rgba(36, 36, 36, 0.7);
-  border: 1px solid var(--battleship-gray);
-  border-radius: 8px;
-  overflow: hidden;
   backdrop-filter: blur(5px);
   transition: all 0.3s ease;
 }
@@ -55,6 +52,9 @@ defineEmits<{
   align-items: center;
   cursor: pointer;
   transition: all 0.3s ease;
+  top: 0;
+  position: sticky;
+  background: rgba(36, 36, 36);
 }
 
 .accordion-header:hover {
