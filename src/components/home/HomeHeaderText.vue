@@ -31,6 +31,7 @@ onMounted(() => {
 .header-text {
   text-align: center;
   padding: 1rem;
+  padding-bottom: 0;
   font-family: 'Orbitron', monospace;
   font-size: 2rem;
   font-weight: 900;
@@ -49,6 +50,7 @@ onMounted(() => {
   .header-text {
     font-size: 1.5rem;
     padding: 0.75rem;
+    padding-bottom: 0;
   }
 }
 </style>
