@@ -15,9 +15,11 @@ All URIs are relative to */v1*
 |[**getMenu**](#getmenu) | **GET** /menu | Get site menu|
 |[**getOrder**](#getorder) | **GET** /order/{id} | Get order by ID|
 |[**getOrders**](#getorders) | **GET** /orders | Get paginated orders|
+|[**getParams**](#getparams) | **GET** /params | Get params|
 |[**healthCheck**](#healthcheck) | **GET** /healthz | Health check|
 |[**login**](#login) | **POST** /login | Login|
 |[**markOrderSeen**](#markorderseen) | **POST** /order/seen | Mark order as seen|
+|[**setHeaderText**](#setheadertext) | **POST** /params/setHeaderText | Set header text|
 |[**setMenuOrdering**](#setmenuordering) | **POST** /menu/ordering | Set menu ordering|
 |[**setOrderStatus**](#setorderstatus) | **POST** /order/setStatus | Set order status|
 |[**setProductGroupOrdering**](#setproductgroupordering) | **POST** /menu/productGroup/ordering | Set product group ordering|
@@ -622,6 +624,53 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **getParams**
+> Params getParams()
+
+
+### Example
+
+```typescript
+import {
+    DefaultApi,
+    Configuration
+} from './api';
+
+const configuration = new Configuration();
+const apiInstance = new DefaultApi(configuration);
+
+const { status, data } = await apiInstance.getParams();
+```
+
+### Parameters
+This endpoint does not have any parameters.
+
+
+### Return type
+
+**Params**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+|**200** | Success |  -  |
+|**400** | Bad Request |  -  |
+|**401** | Unauthorized |  -  |
+|**404** | Not Found |  -  |
+|**500** | Internal Server Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **healthCheck**
 > healthCheck()
 
@@ -768,6 +817,60 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 |**200** | Order status updated successfully |  -  |
+|**400** | Bad Request |  -  |
+|**401** | Unauthorized |  -  |
+|**500** | Internal Server Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **setHeaderText**
+> setHeaderText(setHeaderTextRequest)
+
+
+### Example
+
+```typescript
+import {
+    DefaultApi,
+    Configuration,
+    SetHeaderTextRequest
+} from './api';
+
+const configuration = new Configuration();
+const apiInstance = new DefaultApi(configuration);
+
+let setHeaderTextRequest: SetHeaderTextRequest; //
+
+const { status, data } = await apiInstance.setHeaderText(
+    setHeaderTextRequest
+);
+```
+
+### Parameters
+
+|Name | Type | Description  | Notes|
+|------------- | ------------- | ------------- | -------------|
+| **setHeaderTextRequest** | **SetHeaderTextRequest**|  | |
+
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+|**200** | Header text updated successfully |  -  |
 |**400** | Bad Request |  -  |
 |**401** | Unauthorized |  -  |
 |**500** | Internal Server Error |  -  |

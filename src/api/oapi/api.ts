@@ -424,6 +424,25 @@ export interface OrdersResponse {
 /**
  * 
  * @export
+ * @interface Params
+ */
+export interface Params {
+    /**
+     * 
+     * @type {string}
+     * @memberof Params
+     */
+    'headerText'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Params
+     */
+    'headerDeadline'?: string;
+}
+/**
+ * 
+ * @export
  * @interface Product
  */
 export interface Product {
@@ -512,6 +531,25 @@ export interface ProductGroup {
      * @memberof ProductGroup
      */
     'updated': string;
+}
+/**
+ * 
+ * @export
+ * @interface SetHeaderTextRequest
+ */
+export interface SetHeaderTextRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof SetHeaderTextRequest
+     */
+    'text'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SetHeaderTextRequest
+     */
+    'deadline'?: string;
 }
 /**
  * 
@@ -1033,6 +1071,36 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
+         * @summary Get params
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getParams: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/params`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Health check
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1127,6 +1195,42 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(markOrderSeenRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Set header text
+         * @param {SetHeaderTextRequest} setHeaderTextRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        setHeaderText: async (setHeaderTextRequest: SetHeaderTextRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'setHeaderTextRequest' is not null or undefined
+            assertParamExists('setHeaderText', 'setHeaderTextRequest', setHeaderTextRequest)
+            const localVarPath = `/params/setHeaderText`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(setHeaderTextRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -1398,6 +1502,18 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Get params
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getParams(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Params>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getParams(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.getParams']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @summary Health check
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1432,6 +1548,19 @@ export const DefaultApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.markOrderSeen(markOrderSeenRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.markOrderSeen']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Set header text
+         * @param {SetHeaderTextRequest} setHeaderTextRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async setHeaderText(setHeaderTextRequest: SetHeaderTextRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.setHeaderText(setHeaderTextRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.setHeaderText']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -1594,6 +1723,15 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
+         * @summary Get params
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getParams(options?: RawAxiosRequestConfig): AxiosPromise<Params> {
+            return localVarFp.getParams(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Health check
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1620,6 +1758,16 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          */
         markOrderSeen(requestParameters: DefaultApiMarkOrderSeenRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.markOrderSeen(requestParameters.markOrderSeenRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Set header text
+         * @param {DefaultApiSetHeaderTextRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        setHeaderText(requestParameters: DefaultApiSetHeaderTextRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.setHeaderText(requestParameters.setHeaderTextRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1771,6 +1919,15 @@ export interface DefaultApiInterface {
 
     /**
      * 
+     * @summary Get params
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApiInterface
+     */
+    getParams(options?: RawAxiosRequestConfig): AxiosPromise<Params>;
+
+    /**
+     * 
      * @summary Health check
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -1797,6 +1954,16 @@ export interface DefaultApiInterface {
      * @memberof DefaultApiInterface
      */
     markOrderSeen(requestParameters: DefaultApiMarkOrderSeenRequest, options?: RawAxiosRequestConfig): AxiosPromise<void>;
+
+    /**
+     * 
+     * @summary Set header text
+     * @param {DefaultApiSetHeaderTextRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApiInterface
+     */
+    setHeaderText(requestParameters: DefaultApiSetHeaderTextRequest, options?: RawAxiosRequestConfig): AxiosPromise<void>;
 
     /**
      * 
@@ -2020,6 +2187,20 @@ export interface DefaultApiMarkOrderSeenRequest {
 }
 
 /**
+ * Request parameters for setHeaderText operation in DefaultApi.
+ * @export
+ * @interface DefaultApiSetHeaderTextRequest
+ */
+export interface DefaultApiSetHeaderTextRequest {
+    /**
+     * 
+     * @type {SetHeaderTextRequest}
+     * @memberof DefaultApiSetHeaderText
+     */
+    readonly setHeaderTextRequest: SetHeaderTextRequest
+}
+
+/**
  * Request parameters for setMenuOrdering operation in DefaultApi.
  * @export
  * @interface DefaultApiSetMenuOrderingRequest
@@ -2201,6 +2382,17 @@ export class DefaultApi extends BaseAPI implements DefaultApiInterface {
 
     /**
      * 
+     * @summary Get params
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getParams(options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getParams(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @summary Health check
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -2232,6 +2424,18 @@ export class DefaultApi extends BaseAPI implements DefaultApiInterface {
      */
     public markOrderSeen(requestParameters: DefaultApiMarkOrderSeenRequest, options?: RawAxiosRequestConfig) {
         return DefaultApiFp(this.configuration).markOrderSeen(requestParameters.markOrderSeenRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Set header text
+     * @param {DefaultApiSetHeaderTextRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public setHeaderText(requestParameters: DefaultApiSetHeaderTextRequest, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).setHeaderText(requestParameters.setHeaderTextRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

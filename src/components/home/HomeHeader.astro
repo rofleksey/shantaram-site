@@ -3,6 +3,7 @@
 import {Image} from 'astro:assets';
 import CatImage from "../../assets/shantaram_cat.jpg";
 import EpicTitle from "../common/EpicTitle.astro";
+import HomeHeaderText from './HomeHeaderText.vue';
 ---
 
 <header class="no-select">
@@ -17,12 +18,13 @@ import EpicTitle from "../common/EpicTitle.astro";
                fetchpriority="high"
                decoding="auto"/>
     </div>
+
+    <HomeHeaderText client:only />
 </header>
 
 <style>
   header {
     text-align: center;
-    //padding: 2rem 1rem 1rem;
     position: relative;
     z-index: 10;
   }
@@ -33,8 +35,8 @@ import EpicTitle from "../common/EpicTitle.astro";
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
     margin: 0 auto;
+    position: relative;
   }
 
   .cat-container img {
