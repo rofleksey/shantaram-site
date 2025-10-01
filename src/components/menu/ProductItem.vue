@@ -2,26 +2,16 @@
   <div class="product-item" :class="{ 'product-unavailable': !product.available }">
     <div class="product-info">
       <h4 class="product-title">{{ product.title }}</h4>
-      <p class="product-description" v-html="product.description"/>
+      <div class="product-description" v-html="product.description"></div>
       <div class="product-price">{{ product.price }} ₽</div>
     </div>
 
     <div v-if="product.available" class="product-controls no-select">
-      <div class="quantity-controls">
-        <button
-          class="quantity-btn"
-          @click="decrementProduct"
-          :disabled="!cartItem"
-        >
-          <i class="fas fa-minus"></i>
-        </button>
-        <span class="quantity-display">
-          {{ cartItem?.amount || 0 }}
-        </span>
-        <button class="quantity-btn" @click="incrementProduct">
-          <i class="fas fa-plus"></i>
-        </button>
-      </div>
+      <ProductItemQuantityControls
+        :cart-item="cartItem"
+        @dec="decrementProduct"
+        @inc="incrementProduct"
+      />
     </div>
     <div v-else class="unavailable-label">Нет в наличии</div>
   </div>
@@ -31,6 +21,7 @@
 import type { Product } from '../../api/oapi'
 import { useCartStore } from '../../stores/cart'
 import {computed} from "vue";
+import ProductItemQuantityControls from "./ProductItemQuantityControls.vue";
 
 interface Props {
   product: Product
@@ -96,47 +87,6 @@ const decrementProduct = () => {
   display: flex;
   align-items: center;
   gap: 1rem;
-}
-
-.quantity-controls {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: rgba(12, 12, 12, 0.8);
-  border: 1px solid var(--battleship-gray);
-  border-radius: 4px;
-  padding: 0.25rem;
-}
-
-.quantity-btn {
-  background: transparent;
-  border: none;
-  color: var(--platinum);
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border-radius: 2px;
-}
-
-.quantity-btn:hover:not(:disabled) {
-  background: rgba(223, 223, 223, 0.1);
-  color: var(--almost-white);
-}
-
-.quantity-btn:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-
-.quantity-display {
-  color: var(--almost-white);
-  font-weight: 600;
-  min-width: 30px;
-  text-align: center;
 }
 
 .unavailable-label {

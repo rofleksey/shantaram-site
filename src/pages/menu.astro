@@ -2,14 +2,32 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HomeBackgroundAnimation from '../components/home/HomeBackgroundAnimation.astro';
 import MenuFragment from '../components/menu/MenuFragment.vue';
+import {ApiClient} from "../api/api/api.ts";
+import type {Menu} from "../api/oapi";
+
+const api = new ApiClient()
+
+let menu: Menu
+try {
+  const res = await api.api.getMenu()
+  const targetMenu = res.data.menus.find((m) => m.id === 'main')
+  if (!targetMenu) {
+    throw new Error('menu not found')
+  }
+
+  menu = targetMenu;
+} catch (e) {
+  console.error(e)
+  return Astro.redirect("/500");
+}
 ---
 
 <BaseLayout title="SHANTARAM - Меню">
-    <HomeBackgroundAnimation />
-    <main>
-        <MenuFragment
-          client:only
-          title="Меню"
-          menuId="main" />
-    </main>
+  <HomeBackgroundAnimation />
+  <main>
+    <MenuFragment
+      client:load
+      menu={menu}
+      title="Меню" />
+  </main>
 </BaseLayout>

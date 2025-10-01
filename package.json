@@ -10,8 +10,10 @@
     "gen": "openapi-generator-cli generate -g typescript-axios -i openapi.yaml -o src/api/oapi --additional-properties=withInterfaces=true,useSingleRequestParameter=true"
   },
   "dependencies": {
+    "@astrojs/node": "^9.4.4",
     "@astrojs/vue": "^5.1.1",
     "@openapitools/openapi-generator-cli": "^2.23.4",
+    "@vueuse/core": "^13.9.0",
     "astro": "^5.14.1",
     "astro-icon": "^1.1.5",
     "pinia": "^3.0.3",

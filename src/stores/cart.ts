@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import {defineStore} from 'pinia'
 import { ref, computed } from 'vue'
 import type {CartItem} from "../lib/ui-types.ts";
 import type {Product} from "../api/oapi";
@@ -17,7 +17,10 @@ const CART_VERSION = 2
 const STORAGE_KEY = 'shantaram-cart'
 
 export const useCartStore = defineStore('cart', () => {
-  const items = ref<CartItem[]>(loadFromStorage())
+  const items = ref<CartItem[]>([])
+  const ready = ref(false)
+
+  const isEmpty = computed(() => ready.value && items.value.length === 0)
 
   const total = computed(() => {
     return items.value.reduce((sum, item) => {
@@ -130,16 +133,23 @@ export const useCartStore = defineStore('cart', () => {
     return []
   }
 
+  function reload() {
+    items.value = loadFromStorage()
+    ready.value = true
+  }
+
   console.log('cart store initialized')
 
   return {
     items,
+    isEmpty,
     total,
     itemCount,
     getItem,
     addItem,
     removeItem,
     decrementItem,
-    clearCart
+    clearCart,
+    reload
   }
 })

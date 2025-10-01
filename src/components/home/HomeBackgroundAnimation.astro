@@ -1,101 +1,31 @@
+---
+const userAgent = Astro.request.headers.get('user-agent')?.toLowerCase() || '';
+const isMobile = /android|iphone|ipad|ipod|mobile/i.test(userAgent);
+---
+
 <div id="background-animation">
-  <video
-    id="bg-video"
-    autoplay
-    muted
-    loop
-    playsinline
-    preload="none"
-    poster="/video/background-poster.jpg"
-    style="display: none;"
-  >
-    <source src="/video/background.webm" type="video/webm">
-    <source src="/video/background-hevc.mp4" type="video/mp4; codecs=hvc1">
-    <source src="/video/background.mp4" type="video/mp4">
-  </video>
-
-  <img
-    src="/video/background-poster.jpg"
-    alt=""
-    id="bg-image"
-  />
+  {!isMobile ? (
+    <video
+      id="bg-video"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="none"
+      poster="/video/background-poster.jpg"
+    >
+      <source src="/video/background.webm" type="video/webm">
+      <source src="/video/background-hevc.mp4" type="video/mp4; codecs=hvc1">
+      <source src="/video/background.mp4" type="video/mp4">
+    </video>
+  ) : (
+    <img
+      src="/video/background-poster.jpg"
+      alt=""
+      id="bg-image"
+    />
+  )}
 </div>
-
-<script>
-  const isMobile = () => {
-    return /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) ||
-      window.innerWidth < 768;
-  };
-
-  document.addEventListener('DOMContentLoaded', () => {
-    const video = document.getElementById('bg-video') as HTMLVideoElement;
-    const bgImage = document.getElementById('bg-image');
-
-    if (isMobile()) {
-      if (video) {
-        video.style.display = 'none';
-        video.innerHTML = '';
-      }
-      if (bgImage) {
-        bgImage.style.display = 'block';
-      }
-    } else {
-      if (bgImage) {
-        bgImage.style.display = 'none';
-      }
-      if (video) {
-        video.style.display = 'block';
-        video.preload = 'auto';
-
-        video.innerHTML = `
-          <source src="/video/background.webm" type="video/webm">
-          <source src="/video/background-hevc.mp4" type="video/mp4; codecs=hvc1">
-          <source src="/video/background.mp4" type="video/mp4">
-        `;
-
-        if (typeof window !== 'undefined') {
-          window.__backgroundVideoState = window.__backgroundVideoState || {shouldPlay: true};
-        }
-
-        const playVideo = () => {
-          const videoState = window.__backgroundVideoState;
-          if (video.paused && videoState.shouldPlay) {
-            video.play().catch(e => console.log('Video play failed:', e));
-          }
-        };
-
-        video.load();
-        playVideo();
-
-        document.addEventListener('visibilitychange', () => {
-          if (!document.hidden) {
-            playVideo();
-          }
-        });
-
-        window.addEventListener('beforeunload', () => {
-          window.__backgroundVideoState.shouldPlay = !video.paused;
-        });
-      }
-    }
-  });
-
-  window.addEventListener('resize', () => {
-    if (isMobile()) {
-      const video = document.getElementById('bg-video') as HTMLVideoElement;
-      const bgImage = document.getElementById('bg-image');
-
-      if (video && video.style.display !== 'none') {
-        video.style.display = 'none';
-        video.innerHTML = '';
-        video.pause();
-      }
-      if (bgImage) {
-        bgImage.style.display = 'block';
-      }
-    }
-  });
-</script>
 
 <style>
   #background-animation {
@@ -120,12 +50,35 @@
     transform: translateX(-50%) translateY(-50%);
     object-fit: cover;
   }
-
-  #bg-video {
-    display: none;
-  }
-
-  #bg-image {
-    display: block;
-  }
 </style>
+
+<script>
+  if (typeof window !== 'undefined' && !/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)) {
+    const handleVideoPlayback = () => {
+      const video = document.getElementById('bg-video') as HTMLVideoElement;
+      if (!video) {
+        return;
+      }
+
+      const playVideo = () => {
+        if (video.paused) {
+          video.play().catch(e => console.log('Video play failed:', e));
+        }
+      };
+
+      playVideo();
+
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) {
+          playVideo();
+        }
+      });
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', handleVideoPlayback);
+    } else {
+      handleVideoPlayback();
+    }
+  }
+</script>

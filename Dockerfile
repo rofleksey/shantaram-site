@@ -10,6 +10,10 @@ RUN npm run build
 FROM node:22-alpine
 RUN npm install -g serve
 WORKDIR /app
+COPY package*.json ./
+RUN npm ci
 COPY --from=builder /app/dist ./dist
 EXPOSE 8080
-CMD ["serve", "dist", "-l", "8080"]
+ENV HOST=0.0.0.0
+ENV PORT=8080
+CMD ["node", "./dist/server/entry.mjs"]

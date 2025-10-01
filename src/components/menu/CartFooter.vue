@@ -18,11 +18,11 @@
 </template>
 
 <script setup lang="ts">
-import { useCartStore } from '../../stores/cart'
-import { storeToRefs } from 'pinia'
+import {useCartStore} from '../../stores/cart'
+import {computed, onMounted} from "vue";
 
 const cartStore = useCartStore()
-const { total: cartTotal } = storeToRefs(cartStore)
+const cartTotal = computed(() => cartStore.total)
 
 const goToOrder = () => {
   if (typeof window !== 'undefined' && window.ym) {
@@ -33,6 +33,10 @@ const goToOrder = () => {
   }
   window.location.href = '/order'
 }
+
+onMounted(() => {
+  cartStore.reload()
+})
 </script>
 
 <style scoped>

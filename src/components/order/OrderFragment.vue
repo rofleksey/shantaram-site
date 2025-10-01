@@ -38,7 +38,7 @@ const api = useApiClient()
 const cartStore = useCartStore()
 const cartItems = computed(() => cartStore.items)
 const cartTotal = computed(() => cartStore.total)
-const isEmpty = computed(() => cartItems.value.length === 0)
+const isEmpty = computed(() => cartStore.isEmpty)
 
 const isSubmitting = ref(false)
 const orderSuccess = ref(false)
@@ -90,6 +90,8 @@ const handleOrderSubmit = async (orderData: OrderData) => {
 }
 
 onMounted(() => {
+  useCartStore().reload()
+
   if (isEmpty.value) {
     window.location.href = '/'
   }

@@ -5,6 +5,8 @@ import vue from '@astrojs/vue';
 
 import icon from 'astro-icon';
 
+import node from '@astrojs/node';
+
 // https://astro.build/config
 export default defineConfig({
   integrations: [
@@ -12,5 +14,9 @@ export default defineConfig({
       appEntrypoint: '/src/app',
     }),
     icon()
-  ]
+  ],
+  adapter: node({
+    mode: 'standalone'
+  }),
+  output: 'server'
 });
