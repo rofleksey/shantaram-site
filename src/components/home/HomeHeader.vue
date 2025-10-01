@@ -4,7 +4,7 @@
 
     <div class="cat-container">
       <img
-        src="/src/assets/shantaram_cat.jpg"
+        src="/images/shantaram_cat.jpg"
         alt="Shantaram Cat"
         width="601"
         height="369"
