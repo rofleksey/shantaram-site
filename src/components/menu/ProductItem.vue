@@ -6,13 +6,12 @@
       <div class="product-price">{{ product.price }} ₽</div>
     </div>
 
-    <div v-if="product.available" class="product-controls no-select">
-      <ProductItemQuantityControls
-        :cart-item="cartItem"
-        @dec="decrementProduct"
-        @inc="incrementProduct"
-      />
-    </div>
+    <ProductItemQuantityControls
+      v-if="product.available"
+      :cart-item="cartItem"
+      @dec="decrementProduct"
+      @inc="incrementProduct"
+    />
     <div v-else class="unavailable-label">Нет в наличии</div>
   </div>
 </template>
