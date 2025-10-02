@@ -21,5 +21,5 @@ EXPOSE 8080
 ENV HOST=0.0.0.0
 ENV PORT=8080
 HEALTHCHECK --interval=10s --timeout=10s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:8080/v1/heathz || exit 1
+    CMD curl -f http://localhost:8080/heathz || exit 1
 CMD ["node", "./dist/server/entry.mjs"]
