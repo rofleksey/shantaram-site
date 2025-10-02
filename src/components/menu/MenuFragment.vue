@@ -115,8 +115,6 @@ const setupIntersectionObserver = () => {
   }))
 
   observer = new IntersectionObserver((entries) => {
-    if (isProgrammaticScroll.value) return
-
     entries.forEach((entry) => {
       const groupId = entry.target.id.replace('group-', '')
       const groupEntry = visibilityData.find((g) => g.id === groupId)
@@ -127,7 +125,7 @@ const setupIntersectionObserver = () => {
     })
 
     const newGroupId = visibilityData.find((g) => g.visible)?.id
-    if (newGroupId && newGroupId !== activeGroupId.value) {
+    if (newGroupId && newGroupId !== activeGroupId.value && !isProgrammaticScroll.value) {
       activeGroupId.value = newGroupId
       centerGroupTab(newGroupId)
     }
