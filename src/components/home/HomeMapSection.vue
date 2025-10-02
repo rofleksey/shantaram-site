@@ -53,4 +53,10 @@ const onMapLoad = () => {
   position: relative;
   overflow: hidden;
 }
+
+@media (max-width: 767px) {
+  .map-container {
+    height: 400px;
+  }
+}
 </style>

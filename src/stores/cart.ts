@@ -1,7 +1,8 @@
 import {defineStore} from 'pinia'
-import { ref, computed } from 'vue'
+import {ref, computed} from 'vue'
 import type {CartItem} from "../lib/ui-types.ts";
-import type {Product} from "../api/oapi";
+import type {MenuResponse, Product} from "../api/oapi";
+import {ApiClient} from "../api/api/api.ts";
 
 interface SerializedCartItem {
   product: Product
@@ -10,10 +11,12 @@ interface SerializedCartItem {
 
 interface SerializedCart {
   version: number
+  date: number
   items: SerializedCartItem[]
 }
 
-const CART_VERSION = 2
+const CART_VERSION = 3
+const CART_TTL_MS = 60 * 60 * 1000; // 1 hour
 const STORAGE_KEY = 'shantaram-cart'
 
 export const useCartStore = defineStore('cart', () => {
@@ -87,6 +90,7 @@ export const useCartStore = defineStore('cart', () => {
   function serialize(): SerializedCart {
     return {
       version: CART_VERSION,
+      date: Date.now(),
       items: items.value.map(item => ({
         product: item.product,
         amount: item.amount
@@ -96,7 +100,11 @@ export const useCartStore = defineStore('cart', () => {
 
   function deserialize(data: SerializedCart): CartItem[] {
     if (data.version !== CART_VERSION) {
-      throw new Error(`cart version mismatch`)
+      throw new Error('cart version mismatch')
+    }
+
+    if (Date.now() > data.date + CART_TTL_MS) {
+      throw new Error('cart is outdated')
     }
 
     return data.items
@@ -137,8 +145,6 @@ export const useCartStore = defineStore('cart', () => {
     items.value = loadFromStorage()
     ready.value = true
   }
-
-  console.log('cart store initialized')
 
   return {
     items,

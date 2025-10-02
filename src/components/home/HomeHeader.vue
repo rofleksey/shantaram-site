@@ -27,6 +27,7 @@ header {
   text-align: center;
   position: relative;
   z-index: 10;
+  margin-top: 1.5rem;
 }
 
 .cat-container {

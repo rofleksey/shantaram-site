@@ -53,9 +53,9 @@ const isMobile = /android|iphone|ipad|ipod|mobile/i.test(userAgent);
 </style>
 
 <script>
-  if (typeof window !== 'undefined' && !/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)) {
+  if (typeof window !== 'undefined') {
     const handleVideoPlayback = () => {
-      const video = document.getElementById('bg-video') as HTMLVideoElement;
+      const video = document.getElementById('bg-video') as HTMLVideoElement | null;
       if (!video) {
         return;
       }
