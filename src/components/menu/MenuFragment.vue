@@ -94,27 +94,34 @@ const setupIntersectionObserver = () => {
 
   const options = {
     root: null,
-    rootMargin: '-30% 0px -60% 0px',
-    threshold: [0, 0.1, 0.5, 1]
+    rootMargin: '0px 0px 0px 0px',
+    threshold: [0.1]
   }
 
-  observer = new IntersectionObserver((entries) => {
-    let mostVisibleEntry: IntersectionObserverEntry | undefined
-    let highestRatio = 0
+  interface GroupVisibilityData {
+    id: string;
+    visible: boolean;
+  }
 
-    entries.forEach(entry => {
-      if (entry.intersectionRatio > highestRatio) {
-        highestRatio = entry.intersectionRatio
-        mostVisibleEntry = entry
+  const visibilityData: GroupVisibilityData[] = props.menu.groups.map((g) => ({
+    id: g.id,
+    visible: false
+  }))
+
+  observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      const groupId = entry.target.id.replace('group-', '')
+      const groupEntry = visibilityData.find((g) => g.id === groupId)
+
+      if (groupEntry) {
+        groupEntry.visible = entry.isIntersecting
       }
     })
 
-    if (mostVisibleEntry && mostVisibleEntry.isIntersecting) {
-      const groupId = mostVisibleEntry.target.id.replace('group-', '')
-      if (activeGroupId.value !== groupId) {
-        activeGroupId.value = groupId
-        centerGroupTab(groupId)
-      }
+    const newGroupId = visibilityData.find((g) => g.visible)?.id
+    if (newGroupId) {
+      activeGroupId.value = newGroupId
+      centerGroupTab(newGroupId)
     }
   }, options)
 
