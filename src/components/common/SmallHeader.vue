@@ -25,6 +25,8 @@ const goBack = () => {
   align-items: center;
   justify-content: center;
   margin-bottom: 2rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
   position: relative;
 }
 

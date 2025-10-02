@@ -1,20 +1,21 @@
 <template>
   <div>
-    <div class="groups-header" ref="groupsHeader">
-      <div class="groups-scroll-container" ref="scrollContainer">
-        <button
-          v-for="group in productGroups"
-          :key="group.id"
-          class="group-tab"
-          :class="{ 'group-tab-active': activeGroupId === group.id }"
-          @click="scrollToGroup(group.id)"
-          :data-group="group.id"
-        >
-          {{ group.title }}
-        </button>
+    <transition name="header-slide">
+      <div v-if="showHeader" class="groups-header" ref="groupsHeader">
+        <div class="groups-scroll-container" ref="scrollContainer">
+          <button
+            v-for="group in productGroups"
+            :key="group.id"
+            class="group-tab"
+            :class="{ 'group-tab-active': activeGroupId === group.id }"
+            @click="scrollToGroup(group.id)"
+            :data-group="group.id"
+          >
+            {{ group.title }}
+          </button>
+        </div>
       </div>
-    </div>
-
+    </transition>
 
     <div class="menu-container">
       <SmallHeader :title="props.title"/>
@@ -57,8 +58,10 @@ const activeGroupId = ref<string>(productGroups.value[0]?.id || '')
 const groupsContent = ref<HTMLElement>()
 const groupsHeader = ref<HTMLElement>()
 const scrollContainer = ref<HTMLElement>()
+const showHeader = ref(false)
 
 let observer: IntersectionObserver
+let scrollObserver: IntersectionObserver
 
 const scrollToGroup = (groupId: string) => {
   const element = document.getElementById(`group-${groupId}`)
@@ -96,7 +99,7 @@ const setupIntersectionObserver = () => {
   }
 
   observer = new IntersectionObserver((entries) => {
-    let mostVisibleEntry: IntersectionObserverEntry | null = null
+    let mostVisibleEntry: IntersectionObserverEntry | undefined
     let highestRatio = 0
 
     entries.forEach(entry => {
@@ -123,6 +126,32 @@ const setupIntersectionObserver = () => {
   })
 }
 
+const setupScrollTrigger = () => {
+  const triggerElement = document.createElement('div')
+  triggerElement.style.position = 'absolute'
+  triggerElement.style.top = '20px'
+  triggerElement.style.left = '0'
+  triggerElement.style.width = '100%'
+  triggerElement.style.height = '1px'
+  triggerElement.style.pointerEvents = 'none'
+
+  if (groupsContent.value) {
+    groupsContent.value.appendChild(triggerElement)
+
+    scrollObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        showHeader.value = !entry.isIntersecting
+      })
+    }, {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0
+    })
+
+    scrollObserver.observe(triggerElement)
+  }
+}
+
 onMounted(() => {
   if (typeof window !== 'undefined' && window.ym) {
     window.ym(104322771, 'hit')
@@ -131,12 +160,16 @@ onMounted(() => {
 
   setTimeout(() => {
     setupIntersectionObserver()
+    setupScrollTrigger()
   }, 100)
 })
 
 onUnmounted(() => {
   if (observer) {
     observer.disconnect()
+  }
+  if (scrollObserver) {
+    scrollObserver.disconnect()
   }
 })
 </script>
@@ -146,7 +179,7 @@ onUnmounted(() => {
   padding: 0;
   max-width: 800px;
   margin: 0 auto;
-  margin-top: 6rem;
+  margin-top: 1rem;
   width: 100%;
 }
 
@@ -155,7 +188,7 @@ onUnmounted(() => {
   top: 0;
   left: 0;
   right: 0;
-  background: rgba(36, 36, 36, 255);
+  background: rgba(36, 36, 36, 0.95);
   border-bottom: 1px solid var(--battleship-gray);
   backdrop-filter: blur(20px);
   z-index: 1000;
@@ -165,26 +198,22 @@ onUnmounted(() => {
   align-items: center;
 }
 
-.header-back-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: rgba(223, 223, 223, 0.1);
-  color: var(--almost-white);
-  border: 1px solid rgba(223, 223, 223, 0.2);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin: 0 1rem;
-  flex-shrink: 0;
+.header-slide-enter-active {
+  transition: all 0.3s ease-out;
 }
 
-.header-back-button:hover {
-  background: rgba(223, 223, 223, 0.2);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+.header-slide-leave-active {
+  transition: all 0.2s ease-in;
+}
+
+.header-slide-enter-from {
+  opacity: 0;
+  transform: translateY(-100%);
+}
+
+.header-slide-leave-to {
+  opacity: 0;
+  transform: translateY(-100%);
 }
 
 .groups-scroll-container {
@@ -242,34 +271,11 @@ onUnmounted(() => {
   box-shadow: 0 0 10px var(--almost-white);
 }
 
-.scroll-indicator {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(90deg, rgba(36, 36, 36, 0.9) 0%, transparent 100%);
-  color: var(--platinum);
-  z-index: 10;
-  pointer-events: none;
-}
-
-.scroll-indicator.left {
-  left: 80px;
-  background: linear-gradient(90deg, rgba(36, 36, 36, 0.9) 0%, transparent 100%);
-}
-
-.scroll-indicator.right {
-  right: 0;
-  background: linear-gradient(270deg, rgba(36, 36, 36, 0.9) 0%, transparent 100%);
-}
-
 .groups-content {
-  margin-top: 2.5rem;
+  margin-top: 0;
   margin-bottom: 4rem;
   padding: 0 1rem;
+  position: relative;
 }
 
 .product-group {
@@ -311,7 +317,6 @@ onUnmounted(() => {
   }
 
   .groups-content {
-    margin-top: 2.5rem;
     margin-bottom: 8rem;
     padding: 0 0.5rem;
   }
