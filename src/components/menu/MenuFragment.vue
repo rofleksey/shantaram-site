@@ -59,16 +59,22 @@ const groupsContent = ref<HTMLElement>()
 const groupsHeader = ref<HTMLElement>()
 const scrollContainer = ref<HTMLElement>()
 const showHeader = ref(false)
+const isProgrammaticScroll = ref(false)
 
 let observer: IntersectionObserver
 let scrollObserver: IntersectionObserver
 
 const scrollToGroup = (groupId: string) => {
+  isProgrammaticScroll.value = true
   const element = document.getElementById(`group-${groupId}`)
   if (element) {
     element.scrollIntoView({behavior: 'smooth', block: 'start'})
     activeGroupId.value = groupId
     centerGroupTab(groupId)
+
+    setTimeout(() => {
+      isProgrammaticScroll.value = false
+    }, 500)
   }
 }
 
@@ -109,6 +115,8 @@ const setupIntersectionObserver = () => {
   }))
 
   observer = new IntersectionObserver((entries) => {
+    if (isProgrammaticScroll.value) return
+
     entries.forEach((entry) => {
       const groupId = entry.target.id.replace('group-', '')
       const groupEntry = visibilityData.find((g) => g.id === groupId)
@@ -119,7 +127,7 @@ const setupIntersectionObserver = () => {
     })
 
     const newGroupId = visibilityData.find((g) => g.visible)?.id
-    if (newGroupId) {
+    if (newGroupId && newGroupId !== activeGroupId.value) {
       activeGroupId.value = newGroupId
       centerGroupTab(newGroupId)
     }
@@ -178,6 +186,7 @@ onUnmounted(() => {
   if (scrollObserver) {
     scrollObserver.disconnect()
   }
+  window.removeEventListener('resize', centerTabsIfNeeded)
 })
 </script>
 
@@ -203,6 +212,7 @@ onUnmounted(() => {
   height: 60px;
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .header-slide-enter-active {
@@ -230,10 +240,10 @@ onUnmounted(() => {
   overflow-x: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  flex: 1;
   height: 100%;
   align-items: center;
-  margin-left: 0;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .groups-scroll-container::-webkit-scrollbar {
@@ -312,11 +322,13 @@ onUnmounted(() => {
 @media (max-width: 768px) {
   .groups-header {
     height: 50px;
+    justify-content: flex-start;
   }
 
   .groups-scroll-container {
     gap: 1.5rem;
     padding: 0 0.5rem;
+    justify-content: flex-start;
   }
 
   .group-tab {
