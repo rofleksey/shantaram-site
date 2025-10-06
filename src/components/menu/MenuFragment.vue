@@ -18,7 +18,10 @@
     </transition>
 
     <div class="menu-container">
-      <SmallHeader :title="props.title"/>
+      <SmallHeader
+        :title="props.title"
+        back-url="/"
+      />
 
       <div class="groups-content" ref="groupsContent">
         <div

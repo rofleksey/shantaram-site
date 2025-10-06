@@ -10,12 +10,17 @@
 <script setup lang="ts">
 interface Props {
   title: string;
+  backUrl?: string;
 }
 
 const props = defineProps<Props>()
 
 const goBack = () => {
-  window.history.back();
+  if (props.backUrl) {
+    window.location.href = props.backUrl;
+  } else {
+    window.history.back();
+  }
 };
 </script>
 
